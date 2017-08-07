@@ -1,7 +1,7 @@
-function clozeCard(text, cloze){
-	this.text = text;
+function clozeCard(text,cloze){
 	this.cloze = cloze;
-	this.partial = function(text, cloze){
-		text.replace(cloze, '...');
-}
+	this.partial = partial;
+	this.full = full;
+};
+
 module.exports = clozeCard;
