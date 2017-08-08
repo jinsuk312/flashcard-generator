@@ -1,5 +1,6 @@
 var basicCard = require('./basicCard.js');
-var clozeCard = require('./clozeCard');
+var clozeCard = require('./clozeCard.js');
+var quest = require('./quest.js')
 var inquirer = require('inquirer');
 
 var basicArray = [];
@@ -60,14 +61,15 @@ var add = function(){
 			}]).then(function(answer){
 				var front = answer.front;
 				var back = answer.back;
-				var newBasicCard = new basicCard(front,back);
-				newBasicCard.create();
-				basicArray.push(newBasicCard);
+				var firstPresident = new basicCard(front,back);
+				basicArray.push(firstPresident);
+				console.log(firstPresident);
+				add();
 			});
 		}else if(answer.type === 'cloze'){
 			inquirer.prompt([{
-				name: 'text',
-				message: 'What is the full text?',
+				name: 'full',
+				message: 'What is the full text? Please put the cloze portion first!',
 				validate: function(input){
 					if(input === ''){
 						console.log('Put a full text question')
@@ -79,7 +81,7 @@ var add = function(){
 			},{
 				name:'cloze',
 				message: 'What is the cloze part?',
-				validae: function(input){
+				validate: function(input){
 					if(input === ''){
 						console.log('provide a cloze portion silly');
 						return false;
@@ -87,17 +89,28 @@ var add = function(){
 						return true;
 					}
 				}
-			}]).then(function(answer){
-				var text = answer.text;
-				var cloze = answer.cloze;
-				if(text.includes(cloze)){
-					var newCloze = new clozeCard(text,cloze);
-					newCloze.create();
-					clozeArray.push(newCloze);
-				}else{
-					console.log('Lets start over again');
-					add();
+			},{
+				name: 'partial',
+				message: 'What is the partial message?',
+				validate: function(input){
+					if(input === ''){
+						console.log('provide the partial part!');
+						return false;
+					}else{
+						return true;
+					}
 				}
+
+			}]).then(function(answer){
+				var cloze = answer.cloze;
+				var partial = answer.partial;
+				var full = answer.full;
+			
+					var firstPresidentCloze = new clozeCard(partial,cloze,full);
+					clozeArray.push(firstPresidentCloze);
+					console.log(firstPresidentCloze);
+					add();
+				
 			});
 		}
 	});

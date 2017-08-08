@@ -1,4 +1,4 @@
-function clozeCard(text,cloze){
+function clozeCard(partial,cloze,full){
 	this.cloze = cloze;
 	this.partial = partial;
 	this.full = full;
